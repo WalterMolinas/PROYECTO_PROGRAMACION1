@@ -89,3 +89,164 @@ void mostrarMaterias(int anio) {
 		printf("1. Programacion III\n2. Base de Datos II\n3. Metodologia de Sistemas I\n4. Ingles II\n5. Programacion IV\n6. Metodologia de Sistemas II\n7. Introduccion al Analisis de Datos\n8. Legislacion\n9. Gestion de Desarrollo de Software\n");
 	}
 }
+
+/*Procedimiento para Ingreso de Notas(Logica Principal del Programa Y Operaciones con Arreglos)*/
+void ingresarNotas(int index, int anio) {
+	int materia;
+	char continuar;
+	do {
+		mostrarMaterias(anio);
+		printf("Seleccione la materia (numero): ");
+		scanf("%d", &materia);
+		materia--;
+		
+		int offset = (anio == 2) ? 8 : 0;
+		int limite = (anio == 1) ? 8 : 9;
+		if (materia >= 0 && materia < limite) {
+			float n1, n2, n3;
+			
+			do {
+				printf("Ingrese Nota 1 (0 a 10): ");
+				scanf("%f", &n1);
+				if (n1 < 0 || n1 > 10) printf("Nota inválida. Debe estar entre 0 y 10.\n");
+			} while (n1 < 0 || n1 > 10);
+			
+			do {
+				printf("Ingrese Nota 2 (0 a 10): ");
+				scanf("%f", &n2);
+				if (n2 < 0 || n2 > 10) printf("Nota inválida. Debe estar entre 0 y 10.\n");
+			} while (n2 < 0 || n2 > 10);
+			
+			do {
+				printf("Ingrese Nota 3 (0 a 10): ");
+				scanf("%f", &n3);
+				if (n3 < 0 || n3 > 10) printf("Nota inválida. Debe estar entre 0 y 10.\n");
+			} while (n3 < 0 || n3 > 10);
+			
+			estudiantes[index].notas[materia + offset] = (n1 + n2 + n3) / 3.0;
+			
+			int inasistencias;
+			do {
+				printf("Ingrese Inasistencias (máximo 30): ");
+				scanf("%d", &inasistencias);
+				if (inasistencias < 0 || inasistencias > 30)
+					printf("Cantidad inválida. Debe estar entre 0 y 30.\n");
+			} while (inasistencias < 0 || inasistencias > 30);
+			estudiantes[index].inasistencias[materia + offset] = inasistencias;
+			
+			estudiantes[index].materiasCursadas[materia + offset] = 1;
+		} else {
+			printf("Materia inválida.\n");
+		}
+		
+		printf("¿Desea cargar otra materia? (s/n): ");
+		scanf(" %c", &continuar);
+	} while (continuar == 's' || continuar == 'S');
+}
+
+/*Procedimiento para Mostrar Datos de Estudiantres(Operacion Con Arreglos)*/
+void mostrarEstudiante(int index) {
+	printf("\n--- Datos del Estudiante ---\n");
+	printf("Legajo: %d\nDNI: %s\nNombre: %s\nApellido: %s\nEmail: %s\nDireccion: %s\nTelefono: %s\nEmergencia: %s\n",
+		   estudiantes[index].legajo, estudiantes[index].dni, estudiantes[index].nombre,
+		   estudiantes[index].apellido, estudiantes[index].email, estudiantes[index].direccion,
+		   estudiantes[index].telefono, estudiantes[index].contactoEmergencia);
+	for (int i = 0; i < MAX_MATERIAS; i++) {
+		if (estudiantes[index].materiasCursadas[i]) {
+			printf("Materia %d: Promedio = %.2f | Inasistencias = %d\n", i + 1, estudiantes[index].notas[i], estudiantes[index].inasistencias[i]);
+		}
+	}
+}
+
+/*Procedimiento para Buscar Estudiantres(Operacion Con Arreglos)*/
+void buscarEstudiante() {
+	char criterio[50];
+	int encontrado = 0;
+	
+	printf("Ingrese el nombre o DNI del estudiante a buscar: ");
+	scanf("%s", criterio);
+	
+	for (int i = 0; i < contadorEstudiantes; i++) {
+		if (strcmp(estudiantes[i].dni, criterio) == 0 || strcasecmp(estudiantes[i].nombre, criterio) == 0) {
+			printf("\nEstudiante encontrado:\n");
+			mostrarEstudiante(i);
+			encontrado = 1;
+		}
+	}
+	
+	if (!encontrado) {
+		printf("No se encontró ningún estudiante con ese nombre o DNI.\n");
+	}
+}
+
+/*Procedimiento para Cargar Estudiantres(Logica Principal y Operacion Con Arreglos)*/
+void cargarEstudiante() {
+	if (contadorEstudiantes >= MAX_ESTUDIANTES) {
+		printf("No se pueden cargar más estudiantes. Límite alcanzado.\n");
+		return;
+	}
+	
+	Estudiante nuevo;
+	nuevo.legajo = contadorEstudiantes + 1;
+	
+	do {
+		printf("Ingrese DNI (8 dígitos numéricos): ");
+		scanf("%s", nuevo.dni);
+		if (!validarDNI(nuevo.dni)) {
+			printf("DNI inválido. Intente nuevamente.\n");
+		}
+	} while (!validarDNI(nuevo.dni));
+	
+	printf("Ingrese Nombre: ");
+	scanf(" %[^\n]", nuevo.nombre);
+	printf("Ingrese Apellido: ");
+	scanf(" %[^\n]", nuevo.apellido);
+	
+	do {
+		printf("Ingrese Email: ");
+		scanf("%s", nuevo.email);
+		if (!validarEmail(nuevo.email)) {
+			printf("Email invalido. Intente nuevamente.\n");
+		}
+	} while (!validarEmail(nuevo.email));
+	
+	printf("Ingrese Direccion: ");
+	scanf(" %[^\n]", nuevo.direccion);
+	
+	do {
+		printf("Ingrese Telefono personal (10 digitos): ");
+		scanf("%s", nuevo.telefono);
+		if (!validarTelefono(nuevo.telefono)) {
+			printf("Telefono invalido. Debe tener exactamente 10 digitos numéricos.\n");
+		}
+	} while (!validarTelefono(nuevo.telefono));
+	
+	do {
+		printf("Ingrese Telefono de emergencia (10 digitos): ");
+		scanf("%s", nuevo.contactoEmergencia);
+		if (!validarTelefono(nuevo.contactoEmergencia)) {
+			printf("Telefono invalido. Debe tener exactamente 10 digitos numéricos.\n");
+		}
+	} while (!validarTelefono(nuevo.contactoEmergencia));
+	
+	for (int i = 0; i < MAX_MATERIAS; i++) {
+		nuevo.notas[i] = 0;
+		nuevo.inasistencias[i] = 0;
+		nuevo.materiasCursadas[i] = 0;
+	}
+	
+	estudiantes[contadorEstudiantes] = nuevo;
+	
+	char continuar = 's';
+	while (continuar == 's' || continuar == 'S') {
+		int anio;
+		printf("Cargar materias de que Año? (1 o 2): ");
+		scanf("%d", &anio);
+		ingresarNotas(contadorEstudiantes, anio);
+		printf("Desea cargar materias de otro Año? (s/n): ");
+		scanf(" %c", &continuar);
+	}
+	
+	mostrarEstudiante(contadorEstudiantes);
+	contadorEstudiantes++;
+}
