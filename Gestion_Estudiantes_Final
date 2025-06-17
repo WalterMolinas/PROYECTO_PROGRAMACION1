@@ -1,1 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
+#define MAX_ESTUDIANTES 100
+#define MAX_MATERIAS 20
+#define MAX_NOMBRE 50
+#define MAX_APELLIDO 50
+#define MAX_DNI 10
+#define MAX_EMAIL 50
+#define MAX_DIRECCION 100
+#define MAX_TELEFONO 15
+
+typedef struct {
+	char nombre[MAX_NOMBRE];
+	char apellido[MAX_APELLIDO];
+	char dni[MAX_DNI];
+	char email[MAX_EMAIL];
+	char direccion[MAX_DIRECCION];
+	char telefono[MAX_TELEFONO];
+	char contactoEmergencia[MAX_TELEFONO];
+	int legajo;
+	float notas[MAX_MATERIAS];
+	int inasistencias[MAX_MATERIAS];
+	int materiasCursadas[MAX_MATERIAS];
+} Estudiante;
+
+Estudiante estudiantes[MAX_ESTUDIANTES];
+int contadorEstudiantes = 0;
+
+// Prototipos
+int validarEmail(const char *email);
+int validarDNI(const char *dni);
+int validarTelefono(const char *telefono);
+void mostrarMenu();
+void mostrarMaterias(int anio);
+void ingresarNotas(int index, int anio);
+void mostrarEstudiante(int index);
+void cargarEstudiante();
+void editarEstudiante();
+void guardarEnArchivo();
