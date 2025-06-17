@@ -4,10 +4,10 @@ Este proyecto consiste en un sistema de gestión de estudiantes desarrollado en 
 Incluye funcionalidades como carga de datos personales, validación de campos, registro de notas e inasistencias, y exportación de informes a archivos de texto.
 
 ## 🧑‍💻 Integrantes del grupo
-
-- Walter Molinas  
-- Julieta Aquino  
-- Gallardo Guadalupe
+  
+- Julieta Aquino; Rol: Logica Principal
+- Walter Molinas; Rol: Logica y Operacion Con Arreglos
+- Gallardo Guadalupe; Rol: Implementacion de Archivos y operacion Con Arreglos
 
 ## 📌 Requisitos del Trabajo
 
@@ -44,6 +44,7 @@ Incluye funcionalidades como carga de datos personales, validación de campos, r
 ## 💬 Notas
 
 - Se utilizó ZinjaI para la compilación y ejecución del código en entorno Windows.
+- El siguiente Link https://zinjai.sourceforge.net/ Permitirá descargar el Compilador el cual esta disponible para Linux, Windows y Mac OS.
 - El diseño modular permite fácilmente añadir nuevas funcionalidades como eliminación de estudiantes o filtros por rendimiento.
 
 ---
