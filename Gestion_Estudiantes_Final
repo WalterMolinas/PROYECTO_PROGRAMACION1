@@ -41,14 +41,14 @@ void cargarEstudiante();
 void editarEstudiante();
 void guardarEnArchivo();
 
-/*Procedimiento para Validar Mail(Logica Principal del Programa)*/
+//Procedimiento para Validar Mail(Logica Principal del Programa)
 int validarEmail(const char *email) {
 	const char *arroba = strchr(email, '@');
 	const char *punto = strrchr(email, '.');
 	return (arroba && punto && punto > arroba && arroba != email && *(punto + 1) != '\0');
 }
 
-/*Procedimiento para Validar DNI(Logica Principal del Programa)*/
+//Procedimiento para Validar DNI(Logica Principal del Programa)
 int validarDNI(const char *dni) {
 	if (strlen(dni) != 8) return 0;
 	for (int i = 0; dni[i]; i++) {
@@ -57,7 +57,7 @@ int validarDNI(const char *dni) {
 	return 1;
 }
 
-/*Procedimiento para Validar Telefono(Logica Principal del Programa)*/
+//Procedimiento para Validar Telefono(Logica Principal del Programa)
 int validarTelefono(const char *telefono) {
 	if (strlen(telefono) != 10) return 0;
 	for (int i = 0; i < 10; i++) {
@@ -65,7 +65,7 @@ int validarTelefono(const char *telefono) {
 	}
 	return 1;
 }
-/*Procedimiento para Mostrar el Menú(Logica Principal del Programa)*/
+//Procedimiento para Mostrar el Menú(Logica Principal del Programa)
 void mostrarMenu() {
 	printf("\n========================================\n");
 	printf("         MENU DE ADMINISTRACION         \n");
@@ -79,7 +79,7 @@ void mostrarMenu() {
 	printf("7. Salir\n");
 	printf("========================================\n");
 }
-/*Procedimiento para Mostrar las Materias(Logica del Programa)*/
+//Procedimiento para Mostrar las Materias(Logica del Programa)
 void mostrarMaterias(int anio) {
 	if (anio == 1) {
 		printf("\nMaterias de Primer Año:\n");
@@ -90,7 +90,7 @@ void mostrarMaterias(int anio) {
 	}
 }
 
-/*Procedimiento para Ingreso de Notas(Logica Principal del Programa Y Operaciones con Arreglos)*/
+//Procedimiento para Ingreso de Notas(Logica Principal del Programa Y Operaciones con Arreglos)
 void ingresarNotas(int index, int anio) {
 	int materia;
 	char continuar;
@@ -144,7 +144,7 @@ void ingresarNotas(int index, int anio) {
 	} while (continuar == 's' || continuar == 'S');
 }
 
-/*Procedimiento para Mostrar Datos de Estudiantres(Operacion Con Arreglos)*/
+//Procedimiento para Mostrar Datos de Estudiantres(Operacion Con Arreglos)
 void mostrarEstudiante(int index) {
 	printf("\n--- Datos del Estudiante ---\n");
 	printf("Legajo: %d\nDNI: %s\nNombre: %s\nApellido: %s\nEmail: %s\nDireccion: %s\nTelefono: %s\nEmergencia: %s\n",
@@ -158,7 +158,7 @@ void mostrarEstudiante(int index) {
 	}
 }
 
-/*Procedimiento para Buscar Estudiantres(Operacion Con Arreglos)*/
+//Procedimiento para Buscar Estudiantres(Operacion Con Arreglos)
 void buscarEstudiante() {
 	char criterio[50];
 	int encontrado = 0;
@@ -179,7 +179,7 @@ void buscarEstudiante() {
 	}
 }
 
-/*Procedimiento para Cargar Estudiantres(Logica Principal y Operacion Con Arreglos)*/
+//Procedimiento para Cargar Estudiantres(Logica Principal y Operacion Con Arreglos)
 void cargarEstudiante() {
 	if (contadorEstudiantes >= MAX_ESTUDIANTES) {
 		printf("No se pueden cargar más estudiantes. Límite alcanzado.\n");
@@ -250,7 +250,7 @@ void cargarEstudiante() {
 	mostrarEstudiante(contadorEstudiantes);
 	contadorEstudiantes++;
 }
-/Procedimiento para Editar Datos de Estudiantres(Operacion Con Arreglos y Logica Principal)/
+//Procedimiento para Editar Datos de Estudiantres(Operacion Con Arreglos y Logica Principal)
 void editarEstudiante() {
 	char dni[MAX_DNI];
 	printf("Ingrese el DNI del estudiante a editar: ");
@@ -275,7 +275,7 @@ void editarEstudiante() {
 	printf("Estudiante no encontrado.\n");
 }
 
-/Procedimiento para Guardar Datos de Estudiantres(Archivos)/
+//Procedimiento para Guardar Datos de Estudiantres(Archivos)
 void guardarEnArchivo() {
 	FILE *file = fopen("informe_estudiantes.txt", "w");
 	if (!file) {
@@ -298,7 +298,7 @@ void guardarEnArchivo() {
 	fclose(file);
 	printf("Informe guardado en 'informe_estudiantes.txt'.\n");
 }
-/Procedimiento para Mostrar Promedios de Estudiantres(Operacion Con Arreglos)/
+//Procedimiento para Mostrar Promedios de Estudiantres(Operacion Con Arreglos)
 void mostrarMejoresPromedios() {
 	if (contadorEstudiantes == 0) {
 		printf("No hay estudiantes cargados.\n");
@@ -347,7 +347,7 @@ void mostrarMejoresPromedios() {
 	}
 }
 
-/*INT MAIN PRINCIPAL,(INVOCACION DE PROCEDIMIENTOS)*/
+//INT MAIN PRINCIPAL,(INVOCACION DE PROCEDIMIENTOS)
 int main() {
 	int opcion;
 	do {
