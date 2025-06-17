@@ -250,3 +250,51 @@ void cargarEstudiante() {
 	mostrarEstudiante(contadorEstudiantes);
 	contadorEstudiantes++;
 }
+/Procedimiento para Validar Mail(Logica Principal del Programa)/
+int validarEmail(const char *email) {
+	const char *arroba = strchr(email, '@');
+	const char *punto = strrchr(email, '.');
+	return (arroba && punto && punto > arroba && arroba != email && *(punto + 1) != '\0');
+}
+
+/Procedimiento para Validar DNI(Logica Principal del Programa)/
+int validarDNI(const char *dni) {
+	if (strlen(dni) != 8) return 0;
+	for (int i = 0; dni[i]; i++) {
+		if (!isdigit(dni[i])) return 0;
+	}
+	return 1;
+}
+
+/Procedimiento para Validar Telefono(Logica Principal del Programa)/
+int validarTelefono(const char *telefono) {
+	if (strlen(telefono) != 10) return 0;
+	for (int i = 0; i < 10; i++) {
+		if (!isdigit(telefono[i])) return 0;
+	}
+	return 1;
+}
+/Procedimiento para Mostrar el Menú(Logica Principal del Programa)/
+void mostrarMenu() {
+	printf("\n========================================\n");
+	printf("         MENU DE ADMINISTRACION         \n");
+	printf("========================================\n");
+	printf("1. Cargar nuevo estudiante\n");
+	printf("2. Mostrar Datos\n");
+	printf("3. Editar Estudiante\n");
+	printf("4. Buscar Estudiante\n");
+	printf("5. Mostrar Top 3 Promedios\n");
+	printf("6. Guardar en archivo\n");
+	printf("7. Salir\n");
+	printf("========================================\n");
+}
+/Procedimiento para Mostrar las Materias(Logica del Programa)/
+void mostrarMaterias(int anio) {
+	if (anio == 1) {
+		printf("\nMaterias de Primer Año:\n");
+		printf("1. Programacion I\n2. Arquitectura y Sistemas Operativos\n3. Matematica\n4. Organizacion Empresarial\n5. Programacion II\n6. Probabilidad y Estadistica\n7. Base de Datos I\n8. Ingles I\n");
+	} else {
+		printf("\nMaterias de Segundo Año:\n");
+		printf("1. Programacion III\n2. Base de Datos II\n3. Metodologia de Sistemas I\n4. Ingles II\n5. Programacion IV\n6. Metodologia de Sistemas II\n7. Introduccion al Analisis de Datos\n8. Legislacion\n9. Gestion de Desarrollo de Software\n");
+	}
+}
