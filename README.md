@@ -36,7 +36,7 @@ Incluye funcionalidades como carga de datos personales, validación de campos, r
 
 ```
 📦 proyecto-estudiantes
- ┣ 📄 gestion_estudiantes_final.c
+ ┣ 📄 PROYECTO_PROGRAMACION1.c
  ┣ 📄 informe_estudiantes.txt
  ┗ 📄 README.md
 ```
