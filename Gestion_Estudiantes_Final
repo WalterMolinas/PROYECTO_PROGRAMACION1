@@ -250,3 +250,99 @@ void cargarEstudiante() {
 	mostrarEstudiante(contadorEstudiantes);
 	contadorEstudiantes++;
 }
+/Procedimiento para Editar Datos de Estudiantres(Operacion Con Arreglos y Logica Principal)/
+void editarEstudiante() {
+	char dni[MAX_DNI];
+	printf("Ingrese el DNI del estudiante a editar: ");
+	scanf("%s", dni);
+	for (int i = 0; i < contadorEstudiantes; i++) {
+		if (strcmp(estudiantes[i].dni, dni) == 0) {
+			printf("Estudiante encontrado:\n");
+			mostrarEstudiante(i);
+			printf("Nuevo Email: ");
+			scanf("%s", estudiantes[i].email);
+			printf("Nuevo Telefono: ");
+			scanf("%s", estudiantes[i].telefono);
+			printf("Nuevo Telefono emergencia: ");
+			scanf("%s", estudiantes[i].contactoEmergencia);
+			int anio;
+			printf("Editar materias de que año (1 o 2): ");
+			scanf("%d", &anio);
+			ingresarNotas(i, anio);
+			return;
+		}
+	}
+	printf("Estudiante no encontrado.\n");
+}
+
+/Procedimiento para Guardar Datos de Estudiantres(Archivos)/
+void guardarEnArchivo() {
+	FILE *file = fopen("informe_estudiantes.txt", "w");
+	if (!file) {
+		printf("Error al abrir el archivo.\n");
+		return;
+	}
+	for (int i = 0; i < contadorEstudiantes; i++) {
+		fprintf(file, "Legajo: %d\nDNI: %s\nNombre: %s %s\nEmail: %s\nTelefono: %s\nEmergencia: %s\n",
+				estudiantes[i].legajo, estudiantes[i].dni, estudiantes[i].nombre,
+				estudiantes[i].apellido, estudiantes[i].email, estudiantes[i].telefono,
+				estudiantes[i].contactoEmergencia);
+		for (int j = 0; j < MAX_MATERIAS; j++) {
+			if (estudiantes[i].materiasCursadas[j]) {
+				fprintf(file, "Materia %d: Promedio %.2f - Inasistencias %d\n",
+						j + 1, estudiantes[i].notas[j], estudiantes[i].inasistencias[j]);
+			}
+		}
+		fprintf(file, "\n");
+	}
+	fclose(file);
+	printf("Informe guardado en 'informe_estudiantes.txt'.\n");
+}
+/Procedimiento para Mostrar Promedios de Estudiantres(Operacion Con Arreglos)/
+void mostrarMejoresPromedios() {
+	if (contadorEstudiantes == 0) {
+		printf("No hay estudiantes cargados.\n");
+		return;
+	}
+	
+	// Estructura auxiliar para guardar índice y promedio
+	typedef struct {
+		int index;
+		float promedio;
+	} EstudiantePromedio;
+	
+	EstudiantePromedio listaPromedios[MAX_ESTUDIANTES];
+	
+	// Calcular promedios individuales
+	for (int i = 0; i < contadorEstudiantes; i++) {
+		float suma = 0;
+		int materias = 0;
+		for (int j = 0; j < MAX_MATERIAS; j++) {
+			if (estudiantes[i].materiasCursadas[j]) {
+				suma += estudiantes[i].notas[j];
+				materias++;
+			}
+		}
+		listaPromedios[i].index = i;
+		listaPromedios[i].promedio = (materias > 0) ? suma / materias : 0;
+	}
+	
+	// Ordenar por promedio descendente 
+	for (int i = 0; i < contadorEstudiantes - 1; i++) {
+		for (int j = i + 1; j < contadorEstudiantes; j++) {
+			if (listaPromedios[i].promedio < listaPromedios[j].promedio) {
+				EstudiantePromedio temp = listaPromedios[i];
+				listaPromedios[i] = listaPromedios[j];
+				listaPromedios[j] = temp;
+			}
+		}
+	}
+	
+	printf("\n--- Top 3 Mejores Promedios ---\n");
+	int limite = (contadorEstudiantes < 3) ? contadorEstudiantes : 3;
+	for (int i = 0; i < limite; i++) {
+		int idx = listaPromedios[i].index;
+		printf("%d. %s %s - Promedio General: %.2f\n", 
+			   i + 1, estudiantes[idx].nombre, estudiantes[idx].apellido, listaPromedios[i].promedio);
+	}
+}
