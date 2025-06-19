@@ -74,3 +74,130 @@ void mostrarMenu() {
 	printf("7. Salir\n");
 	printf("============================\n");
 }
+
+//Procedimiento para Ingreso de Notas(Logica Principal del Programa Y Operaciones con Listas)
+void ingresarNotas(Estudiante *est) {
+	int materia;
+	char continuar;
+	int offset = 0;   // Primer año
+	int limite = 8;   // Solo materias de primer año
+	
+	do {
+		printf("\nMaterias de Primer Año:\n");
+		printf("1. Programacion I\n2. Arquitectura y Sistemas Operativos\n3. Matematica\n4. Organizacion Empresarial\n");
+		printf("5. Programacion II\n6. Probabilidad y Estadistica\n7. Base de Datos I\n8. Ingles I\n");
+		printf("Seleccione la materia (1-%d): ", limite);
+		scanf("%d", &materia);
+		materia--;
+		
+		if (materia >= 0 && materia < limite) {
+			float n1, n2, n3;
+			do {
+				printf("Nota 1: "); scanf("%f", &n1);
+			} while (n1 < 0 || n1 > 10);
+			do {
+				printf("Nota 2: "); scanf("%f", &n2);
+			} while (n2 < 0 || n2 > 10);
+			do {
+				printf("Nota 3: "); scanf("%f", &n3);
+			} while (n3 < 0 || n3 > 10);
+			
+			est->notas[materia + offset] = (n1 + n2 + n3) / 3.0;
+			
+			int inas;
+			do {
+				printf("Inasistencias (0-30): ");
+				scanf("%d", &inas);
+			} while (inas < 0 || inas > 30);
+			est->inasistencias[materia + offset] = inas;
+			est->materiasCursadas[materia + offset] = 1;
+		} else {
+			printf("Materia invalida.\n");
+		}
+		
+		printf("¿Otra materia? (s/n): ");
+		scanf(" %c", &continuar);
+	} while (continuar == 's' || continuar == 'S');
+	
+	printf("\n Estudiante cargado correctamente.\n");
+}
+
+//Procedimiento para Mostrar Datos de Estudiantres(Operacion Con Listas y Busqueda)
+void mostrarEstudiante(Estudiante *e) {
+	printf("\nLegajo: %d\nDNI: %s\nNombre: %s %s\nEmail: %s\nTelefono: %s\nEmergencia: %s\n",
+		   e->legajo, e->dni, e->nombre, e->apellido, e->email, e->telefono, e->contactoEmergencia);
+	for (int i = 0; i < MAX_MATERIAS; i++) {
+		if (e->materiasCursadas[i]) {
+			printf("Materia %d: Promedio = %.2f | Inasistencias = %d\n", i + 1, e->notas[i], e->inasistencias[i]);
+		}
+	}
+}
+
+//Procedimiento para Cargar Estudiantres(Logica Principal y Operacion Con Listas)
+void cargarEstudiante() {
+	Estudiante *nuevo = (Estudiante *)malloc(sizeof(Estudiante));
+	nuevo->legajo = contadorLegajo++;
+	nuevo->siguiente = NULL;
+	
+	do {
+		printf("DNI: "); scanf("%s", nuevo->dni);
+		if (!validarDNI(nuevo->dni)) {
+			printf("DNI invalido. Debe tener 8 digitos numericos.\n");
+		}
+	} while (!validarDNI(nuevo->dni));
+	
+	printf("Nombre: "); scanf(" %[^\n]", nuevo->nombre);
+	printf("Apellido: "); scanf(" %[^\n]", nuevo->apellido);
+	
+	do {
+		printf("Email: "); scanf("%s", nuevo->email);
+		if (!validarEmail(nuevo->email)) {
+			printf("Email invalido. Debe tener formato ejemplo@dominio.com\n");
+		}
+	} while (!validarEmail(nuevo->email));
+	
+	printf("Direccion: "); scanf(" %[^\n]", nuevo->direccion);
+	
+	do {
+		printf("Telefono: "); scanf("%s", nuevo->telefono);
+		if (!validarTelefono(nuevo->telefono)) {
+			printf("Numero invalido. Debe contener exactamente 10 digitos numericos.\n");
+		}
+	} while (!validarTelefono(nuevo->telefono));
+	
+	do {
+		printf("Emergencia: "); scanf("%s", nuevo->contactoEmergencia);
+		if (!validarTelefono(nuevo->contactoEmergencia)) {
+			printf("Numero invalido. Debe contener exactamente 10 digitos numericos.\n");
+		}
+	} while (!validarTelefono(nuevo->contactoEmergencia));
+	
+	for (int i = 0; i < MAX_MATERIAS; i++) {
+		nuevo->notas[i] = 0;
+		nuevo->inasistencias[i] = 0;
+		nuevo->materiasCursadas[i] = 0;
+	}
+	
+	printf("\n¡Vamos a cargar notas de Primer Año!\n");
+	ingresarNotas(nuevo);
+	
+	nuevo->siguiente = lista;
+	lista = nuevo;
+}
+
+//Procedimiento para Buscar Estudiantres(Operacion Con Listas)
+void buscarEstudiante() {
+	char criterio[50];
+	printf("Buscar por nombre o DNI: ");
+	scanf("%s", criterio);
+	Estudiante *actual = lista;
+	int encontrado = 0;
+	while (actual) {
+		if (strcasecmp(actual->nombre, criterio) == 0 || strcmp(actual->dni, criterio) == 0) {
+			mostrarEstudiante(actual);
+			encontrado = 1;
+		}
+		actual = actual->siguiente;
+	}
+	if (!encontrado) printf("Estudiante no encontrado.\n");
+}
