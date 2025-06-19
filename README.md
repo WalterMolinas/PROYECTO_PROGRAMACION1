@@ -5,8 +5,8 @@ Incluye funcionalidades como carga de datos personales, validación de campos, r
 
 ## 🧑‍💻 Integrantes del grupo
   
-- Julieta Aquino; Rol: Logica Principal
-- Walter Molinas; Rol: Logica y Operacion Con Arreglos
+- Julieta Aquino; Rol: Logica Principal y Operacion Con Arreglos
+- Walter Molinas; Rol: Operacion Con Arreglos y Listas
 - Gallardo Guadalupe; Rol: Implementacion de Archivos y operacion Con Arreglos
 
 ## 📌 Requisitos del Trabajo
