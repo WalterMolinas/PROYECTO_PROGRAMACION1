@@ -200,4 +200,93 @@ void buscarEstudiante() {
 		actual = actual->siguiente;
 	}
 	if (!encontrado) printf("Estudiante no encontrado.\n");
+}  //Procedimiento para Mostrar Promedios de Estudiantres(Operacion Con Arreglos y Busqueda)
+void mostrarMejoresPromedios() {
+	if (lista == NULL) {
+		printf("\nNo hay estudiantes cargados.\n");
+		return;
+	}
+	
+	typedef struct {
+		Estudiante *e;
+		float promedio;
+	} Ranking;
+	
+	Ranking top[3] = {{NULL,0},{NULL,0},{NULL,0}};
+	Estudiante *actual = lista;
+	while (actual) {
+		float suma = 0; int materias = 0;
+		for (int i = 0; i < MAX_MATERIAS; i++) {
+			if (actual->materiasCursadas[i]) {
+				suma += actual->notas[i]; materias++;
+			}
+		}
+		float promedio = (materias > 0) ? suma / materias : 0;
+		for (int i = 0; i < 3; i++) {
+			if (promedio > top[i].promedio) {
+				for (int j = 2; j > i; j--) top[j] = top[j-1];
+				top[i].e = actual;
+				top[i].promedio = promedio;
+				break;
+			}
+		}
+		actual = actual->siguiente;
+	}
+	
+	printf("\n--- Top 3 Promedios ---\n");
+	for (int i = 0; i < 3 && top[i].e; i++) {
+		printf("%d. %s %s - Promedio General: %.2f\n", i+1, top[i].e->nombre, top[i].e->apellido, top[i].promedio);
+	}
+}
+
+//Procedimiento para Eliminar Un estudiante(Operacion Con Listas)
+void eliminarEstudiante() {
+	char dni[MAX_DNI];
+	printf("Ingrese DNI del estudiante a eliminar: ");
+	scanf("%s", dni);
+	
+	Estudiante *actual = lista;
+	Estudiante *anterior = NULL;
+	
+	while (actual != NULL) {
+		if (strcmp(actual->dni, dni) == 0) {
+			if (anterior == NULL) {
+				// Eliminar el primero
+				lista = actual->siguiente;
+			} else {
+				anterior->siguiente = actual->siguiente;
+			}
+			free(actual);
+			printf("Estudiante con DNI %s eliminado.\n", dni);
+			return;
+		}
+		anterior = actual;
+		actual = actual->siguiente;
+	}
+	printf("Estudiante con DNI %s no encontrado.\n", dni);
+}
+
+//Procedimiento para Guardar Datos de Estudiantres(Archivos)
+void guardarEnArchivo() {
+	FILE *file = fopen("informe_estudiantes.txt", "w");
+	if (!file) {
+		printf("Error al abrir archivo para escritura.\n");
+		return;
+	}
+	Estudiante *actual = lista;
+	while (actual != NULL) {
+		fprintf(file, "Legajo: %d\nDNI: %s\nNombre: %s %s\nEmail: %s\nTelefono: %s\nEmergencia: %s\n",
+				actual->legajo, actual->dni, actual->nombre, actual->apellido,
+				actual->email, actual->telefono, actual->contactoEmergencia);
+		for (int i = 0; i < MAX_MATERIAS; i++) {
+			if (actual->materiasCursadas[i]) {
+				fprintf(file, "Materia %d: Promedio %.2f - Inasistencias %d\n",
+						i + 1, actual->notas[i], actual->inasistencias[i]);
+			}
+		}
+		fprintf(file, "\n");
+		actual = actual->siguiente;
+	}
+	fclose(file);
+	printf("Datos guardados en 'informe_estudiantes.txt'\n");
 }
