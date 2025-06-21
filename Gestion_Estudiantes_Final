@@ -290,3 +290,35 @@ void guardarEnArchivo() {
 	fclose(file);
 	printf("Datos guardados en 'informe_estudiantes.txt'\n");
 }
+
+//INT MAIN PRINCIPAL,(INVOCACION DE PROCEDIMIENTOS)
+int main() {
+	int opcion;
+	do {
+		mostrarMenu();
+		printf("Opcion: ");
+		scanf("%d", &opcion);
+		switch (opcion) {
+		case 1: cargarEstudiante(); break;
+		case 2: {
+			if (lista == NULL) {
+				printf("\nNo hay estudiantes cargados.\n");
+			} else {
+				Estudiante *tmp = lista;
+				while (tmp) {
+					mostrarEstudiante(tmp);
+					tmp = tmp->siguiente;
+				}
+			}
+			break;
+		}
+		case 3: buscarEstudiante(); break;
+		case 4: mostrarMejoresPromedios(); break;
+		case 5: eliminarEstudiante(); break;
+		case 6: guardarEnArchivo(); break;
+		case 7: printf("Saliendo...\n"); break;
+		default: printf("Opcion invalida.\n");
+		}
+	} while (opcion != 7);
+	return 0;
+}
