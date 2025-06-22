@@ -27,9 +27,9 @@ Incluye funcionalidades como carga de datos personales, validación de campos, r
   - Guardar los datos en un archivo externo
   - Mostrar un Top 3 de mejores promedios generales
 - Validaciones integradas:
-  - DNI (8 dígitos numéricos)
-  - Email (formato correcto)
-  - Teléfono personal y de emergencia (10 dígitos numéricos)
+- DNI (8 dígitos numéricos)
+- Email (formato correcto)
+- Teléfono personal y de emergencia (10 dígitos numéricos)
 - Registro de materias, 3 notas e inasistencias del primer año académico
 - Exportación de informe a `informe_estudiantes.txt`
 
